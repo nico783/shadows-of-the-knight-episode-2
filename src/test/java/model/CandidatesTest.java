@@ -2,11 +2,9 @@ package model;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static java.lang.Math.sqrt;
 import static org.junit.Assert.*;
 
 public class CandidatesTest {
