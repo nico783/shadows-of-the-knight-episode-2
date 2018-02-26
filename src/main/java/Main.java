@@ -31,7 +31,7 @@ public class Main {
             int right = candidates.getRight();
             if (left != right) {
                 candidates.restrictAbs(old, target, state);
-                double middle = (double) (left + right) / 2;
+                double middle = (double) (candidates.getLeft() + candidates.getRight()) / 2;
                 origin = new Cell(target);
                 target = candidates.getHorizontalTarget(origin, middle);
             } else {

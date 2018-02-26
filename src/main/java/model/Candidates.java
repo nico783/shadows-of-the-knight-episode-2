@@ -39,20 +39,22 @@ public class Candidates {
 
         List<Integer> toRemove = new ArrayList<>();
 
+        int left = getLeft();
+        int right = getRight();
         if (state == Distance.COLDER) {
-            for (int i = getLeft(); i <= getRight(); i++) {
+            for (int i = left; i <= right; i++) {
                 if (new Vecteur(middlePoint, new Cell(i, 0)).scalarProduct(targetDirection) >= 0) {
                     toRemove.add(i);
                 }
             }
         } else if (state == Distance.WARMER) {
-            for (int i = getLeft(); i <= getRight(); i++) {
+            for (int i = left; i <= right; i++) {
                 if (new Vecteur(middlePoint, new Cell(i, 0)).scalarProduct(originDirection) >= 0) {
                     toRemove.add(i);
                 }
             }
         } else if (state == Distance.SAME) {
-            for (int i = getLeft(); i <= getRight(); i++) {
+            for (int i = left; i <= right; i++) {
                 if (new Vecteur(middlePoint, new Cell(i, 0)).scalarProduct(originDirection) != 0) {
                     toRemove.add(i);
                 }
@@ -136,7 +138,7 @@ public class Candidates {
         }
 
         // Il ne faut pas rester bloqué au même endroit
-        if (middleInt == dimension) {
+        if (middleInt == dimension && getLeft()!= getRight()) {
             return middleInt + 1;
         } else {
             return middleInt;
