@@ -1,26 +1,25 @@
 package model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Candidates extends ForwardingSet<Cell> {
+public class Candidates {
 
-    private int rowsNumber;
+    private List<Integer> rows;
 
-    private int colsNumber;
-
-    protected Candidates(Set<Cell> set) {
-        super(set);
-    }
+    private List<Integer> cols;
 
     public Candidates(int w, int h) {
-        this(new HashSet<>());
-        for (int i = 0; i < w; i++) {
-            for (int j = 0; j < h; j++) {
-                this.add(new Cell(i, j));
-            }
+        rows = new ArrayList<>();
+        cols = new ArrayList<>();
+
+        for(int i = 0; i <= w-1; i++){
+            cols.add(i);
         }
-        rowsNumber = w - 1;
-        colsNumber = h - 1;
+
+        for(int j = 0; j <= h-1; j++){
+            rows.add(j);
+        }
     }
 
     /**
@@ -31,45 +30,96 @@ public class Candidates extends ForwardingSet<Cell> {
      * @param target cellule d'arrivée
      * @param state  état
      */
-    public void restrict(Cell origin, Cell target, Distance state) {
+    public void restrictAbs(Cell origin, Cell target, Distance state) {
         Point middlePoint = new Point(((double) target.getAbscisse() + (double) origin.getAbscisse()) / 2,
                 ((double) target.getOrdonnee() + (double) origin.getOrdonnee()) / 2);
 
         Vecteur originDirection = new Vecteur(middlePoint, origin);
         Vecteur targetDirection = new Vecteur(middlePoint, target);
 
+        List<Integer> toRemove = new ArrayList<>();
+
         if (state == Distance.COLDER) {
-            this.removeIf(cell -> new Vecteur(middlePoint, cell).scalarProduct(targetDirection) >= 0);
+            for (int i = getLeft(); i <= getRight(); i++) {
+                if (new Vecteur(middlePoint, new Cell(i, 0)).scalarProduct(targetDirection) >= 0) {
+                    toRemove.add(i);
+                }
+            }
         } else if (state == Distance.WARMER) {
-            this.removeIf(cell -> new Vecteur(middlePoint, cell).scalarProduct(originDirection) >= 0);
+            for (int i = getLeft(); i <= getRight(); i++) {
+                if (new Vecteur(middlePoint, new Cell(i, 0)).scalarProduct(originDirection) >= 0) {
+                    toRemove.add(i);
+                }
+            }
         } else if (state == Distance.SAME) {
-            this.removeIf(cell -> cell.distance(origin) != cell.distance(target));
+            for (int i = getLeft(); i <= getRight(); i++) {
+                if (new Vecteur(middlePoint, new Cell(i, 0)).scalarProduct(originDirection) != 0) {
+                    toRemove.add(i);
+                }
+            }
         } else if (state == Distance.UNKNOWN) {
             // Pas de restriction possible
         } else {
             throw new IllegalStateException("Impossible state");
         }
+        cols.removeAll(toRemove);
     }
 
-    public int getRight(){
-        return this.stream().map(cell -> cell.getAbscisse()).reduce(0, (i1, i2) -> i1 < i2 ? i2 : i1);
+    public void restrictOrd(Cell origin, Cell target, Distance state) {
+        Point middlePoint = new Point(((double) target.getAbscisse() + (double) origin.getAbscisse()) / 2,
+                ((double) target.getOrdonnee() + (double) origin.getOrdonnee()) / 2);
+
+        Vecteur originDirection = new Vecteur(middlePoint, origin);
+        Vecteur targetDirection = new Vecteur(middlePoint, target);
+        List<Integer> toRemove = new ArrayList<>();
+
+        if (state == Distance.COLDER) {
+            for (int i = getTop(); i <= getBack(); i++) {
+                if (new Vecteur(middlePoint, new Cell(0, i)).scalarProduct(targetDirection) >= 0) {
+                    toRemove.add(i);
+                }
+            }
+
+        } else if (state == Distance.WARMER) {
+            for (int i = getTop(); i <= getBack(); i++) {
+                if (new Vecteur(middlePoint, new Cell(0, i)).scalarProduct(originDirection) >= 0) {
+                    toRemove.add(i);
+                }
+            }
+        } else if (state == Distance.SAME) {
+            for (int i = getTop(); i <= getBack(); i++) {
+                if (new Vecteur(middlePoint, new Cell(0, i)).scalarProduct(originDirection) != 0) {
+                    toRemove.add(i);
+                }
+            }
+        } else if (state == Distance.UNKNOWN) {
+            // Pas de restriction possible
+        } else {
+            throw new IllegalStateException("Impossible state");
+        }
+
+        rows.removeAll(toRemove);
     }
 
-    public int getLeft(){
-        return this.stream().map(cell -> cell.getAbscisse()).reduce(10000, (i1, i2) -> i1 < i2 ? i1 : i2);
+    public int getRight() {
+        return cols.stream().max(Integer::compareTo).get();
     }
 
-    public int getTop(){
-        return this.stream().map(cell -> cell.getOrdonnee()).reduce(10000, (i1, i2) -> i1 < i2 ? i1 : i2);
+    public int getLeft() {
+        return cols.stream().min(Integer::compareTo).get();
     }
 
-    public int getBack(){
-        return this.stream().map(cell -> cell.getOrdonnee()).reduce(0, (i1, i2) -> i1 < i2 ? i2 : i1);
+    public int getTop() {
+        return rows.stream().min(Integer::compareTo).get();
+    }
+
+    public int getBack() {
+        return rows.stream().max(Integer::compareTo).get();
     }
 
     public Cell getVerticalTarget(Cell origin, double middle) {
         int targetOrdonnee = computeTarget(middle, origin.getOrdonnee());
-        return new Cell(((Cell)(this.toArray()[0])).getAbscisse(), targetOrdonnee);
+        return new Cell(getLeft(), targetOrdonnee);
     }
 
     public Cell getHorizontalTarget(Cell origin, double middle) {

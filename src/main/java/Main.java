@@ -16,6 +16,7 @@ public class Main {
         int Y0 = in.nextInt();
 
         Candidates candidates = new Candidates(W, H);
+        Cell old;
         Cell origin = new Cell(X0, Y0);
         Cell target = new Cell(X0, Y0);
 
@@ -24,17 +25,19 @@ public class Main {
             String bombDir = in.next(); // Current distance to the bomb compared to previous distance (COLDER, WARMER, SAME or UNKNOWN)
             Distance state = Distance.valueOf(bombDir);
 
-            candidates.restrict(origin, target, state);
-
-            origin = new Cell(target);
+            old = new Cell(origin);
 
             int left = candidates.getLeft();
             int right = candidates.getRight();
             if (left != right) {
+                candidates.restrictAbs(old, target, state);
                 double middle = (double) (left + right) / 2;
+                origin = new Cell(target);
                 target = candidates.getHorizontalTarget(origin, middle);
             } else {
+                candidates.restrictOrd(old, target, state);
                 double middle = (double) (candidates.getTop() + candidates.getBack()) / 2;
+                origin = new Cell(target);
                 target = candidates.getVerticalTarget(origin, middle);
             }
 
