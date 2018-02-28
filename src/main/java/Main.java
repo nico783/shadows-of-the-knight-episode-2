@@ -29,16 +29,24 @@ public class Main {
 
             int left = candidates.getLeft();
             int right = candidates.getRight();
+
             if (left != right) {
                 candidates.restrictAbs(old, target, state);
-                double middle = (double) (candidates.getLeft() + candidates.getRight()) / 2;
                 origin = new Cell(target);
-                target = candidates.getHorizontalTarget(origin, middle);
+                if(origin.distance(new Cell(candidates.getRight(), old.getOrdonnee()))>origin.distance(new Cell(candidates.getLeft(), old.getOrdonnee()))){
+                    target = new Cell(candidates.getRight(), old.getOrdonnee());
+                } else {
+                    target = new Cell(candidates.getLeft(), old.getOrdonnee());
+                }
+
             } else {
-                candidates.restrictOrd(old, target, state);
-                double middle = (double) (candidates.getTop() + candidates.getBack()) / 2;
+                candidates.restrictOrd(new Cell(left, old.getOrdonnee()), target, state);
                 origin = new Cell(target);
-                target = candidates.getVerticalTarget(origin, middle);
+                if(origin.distance(new Cell(left, candidates.getBack()))>origin.distance(new Cell(left, candidates.getTop()))){
+                    target = new Cell(left, candidates.getBack());
+                } else {
+                    target = new Cell(left, candidates.getTop());
+                }
             }
 
             System.out.println(target.getAbscisse() + " " + target.getOrdonnee());

@@ -119,31 +119,4 @@ public class Candidates {
         return rows.stream().max(Integer::compareTo).get();
     }
 
-    public Cell getVerticalTarget(Cell origin, double middle) {
-        int targetOrdonnee = computeTarget(middle, origin.getOrdonnee());
-        return new Cell(getLeft(), targetOrdonnee);
-    }
-
-    public Cell getHorizontalTarget(Cell origin, double middle) {
-        int targetAbscisse = computeTarget(middle, origin.getAbscisse());
-        return new Cell(targetAbscisse, origin.getOrdonnee());
-    }
-
-    private int computeTarget(double middle, int dimension) {
-        int middleInt;
-        if (middle % 1 == 0) {
-            middleInt = (int) middle;
-        } else {
-            middleInt = (int) Math.floor(middle);
-        }
-
-        // Il ne faut pas rester bloqué au même endroit
-        if (middleInt == dimension && getLeft()!= getRight()) {
-            return middleInt + 1;
-        } else {
-            return middleInt;
-        }
-    }
-
-
 }
