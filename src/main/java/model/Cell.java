@@ -13,6 +13,11 @@ public class Cell {
         this.ordonnee = ordonnee;
     }
 
+    public Cell(double abscisse, double ordonnee) {
+        this.abscisse = (int) abscisse;
+        this.ordonnee = (int) ordonnee;
+    }
+
     public Cell(Cell other){
         this.abscisse = other.abscisse;
         this.ordonnee = other.ordonnee;
