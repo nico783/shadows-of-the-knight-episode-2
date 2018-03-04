@@ -115,7 +115,6 @@ public class CandidatesTest {
         assertEquals(1, candidates.size());
     }
 
-    @Ignore
     @Test(timeout = 150)
     public void testLeftPerf() {
         Candidates candidates = new Candidates(1000, 1000);
@@ -124,14 +123,12 @@ public class CandidatesTest {
         System.out.println(System.currentTimeMillis() - debut);
     }
 
-    @Ignore
     @Test(timeout = 150)
     public void testConstructorPerf() {
         long debut = System.currentTimeMillis();
         Candidates candidates = new Candidates(1000, 1000);
         System.out.println(System.currentTimeMillis() - debut);
     }
-
 
     @Test
     public void testGetRight(){
