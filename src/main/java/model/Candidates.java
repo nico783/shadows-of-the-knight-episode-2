@@ -1,7 +1,5 @@
 package model;
 
-import java.util.*;
-
 public class Candidates {
 
     private int i0;
@@ -34,27 +32,27 @@ public class Candidates {
         if (this.getLeft() == this.getRight()) {
             if (state == Distance.COLDER) {
                 if (vecteurRef.scalarProduct(targetDirection) >= 0) {
-                    in = (int) middlePoint.getOrdonnee();
+                    jn = (int) middlePoint.getOrdonnee();
                 } else {
                     if (middlePoint.getOrdonnee() % 1 == 0) {
-                        i0 = (int) middlePoint.getOrdonnee();
+                        j0 = (int) middlePoint.getOrdonnee();
                     } else {
-                        i0 = (int) middlePoint.getOrdonnee() + 1;
+                        j0 = (int) middlePoint.getOrdonnee() + 1;
                     }
                 }
             } else if (state == Distance.WARMER) {
                 if (vecteurRef.scalarProduct(targetDirection) >= 0) {
                     if (middlePoint.getOrdonnee() % 1 == 0) {
-                        i0 = (int) middlePoint.getOrdonnee();
+                        j0 = (int) middlePoint.getOrdonnee();
                     } else {
-                        i0 = (int) middlePoint.getOrdonnee() + 1;
+                        j0 = (int) middlePoint.getOrdonnee() + 1;
                     }
                 } else {
-                    in = (int) middlePoint.getOrdonnee();
+                    jn = (int) middlePoint.getOrdonnee();
                 }
             } else if (state == Distance.SAME) {
-                i0 = (int) middlePoint.getOrdonnee();
-                in = (int) middlePoint.getOrdonnee();
+                j0 = (int) middlePoint.getOrdonnee();
+                jn = (int) middlePoint.getOrdonnee();
             } else if (state == Distance.UNKNOWN) {
                 // Pas de restriction possible
             } else {
