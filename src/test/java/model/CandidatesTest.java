@@ -132,25 +132,25 @@ public class CandidatesTest {
     @Test
     public void testGetRight(){
         Candidates candidates = new Candidates(3,1);
-        assertEquals(3, candidates.getRight());
+        assertEquals(2, candidates.getRight());
     }
 
     @Test
     public void testGetLeft(){
         Candidates candidates = new Candidates(3,1);
-        assertEquals(1, candidates.getLeft());
+        assertEquals(0, candidates.getLeft());
     }
 
     @Test
     public void testGetTop(){
         Candidates candidates = new Candidates(3,3);
-        assertEquals(1, candidates.getTop());
+        assertEquals(0, candidates.getTop());
     }
 
     @Test
     public void testGetBack(){
         Candidates candidates = new Candidates(3,3);
-        assertEquals(3, candidates.getBack());
+        assertEquals(2, candidates.getBack());
     }
 
     @Test
@@ -231,6 +231,13 @@ public class CandidatesTest {
         Candidates candidates = new Candidates(1, 1);
         assertEquals(candidates.getRight(), candidates.getLeft());
         assertEquals(candidates.getBack(), candidates.getTop());
+    }
+
+
+
+    @Test
+    public void testVertical(){
+
     }
 
 

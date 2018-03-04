@@ -27,11 +27,11 @@ public class Candidates {
                 ((double) target.getOrdonnee() + (double) origin.getOrdonnee()) / 2);
 
         Vecteur targetDirection = new Vecteur(middlePoint, target);
-        Vecteur vecteurRef = new Vecteur(middlePoint, new Cell(this.getRight(), this.getTop()));
+        Vecteur vecteurRef = new Vecteur(middlePoint, new Cell(this.getRight() + 1, this.getTop() - 1));
 
         if (this.getLeft() == this.getRight()) {
             if (state == Distance.COLDER) {
-                if (vecteurRef.scalarProduct(targetDirection) >= 0) {
+                if (vecteurRef.scalarProduct(targetDirection) <= 0) {
                     jn = (int) middlePoint.getOrdonnee();
                 } else {
                     if (middlePoint.getOrdonnee() % 1 == 0) {
@@ -41,7 +41,7 @@ public class Candidates {
                     }
                 }
             } else if (state == Distance.WARMER) {
-                if (vecteurRef.scalarProduct(targetDirection) >= 0) {
+                if (vecteurRef.scalarProduct(targetDirection) <= 0) {
                     if (middlePoint.getOrdonnee() % 1 == 0) {
                         j0 = (int) middlePoint.getOrdonnee();
                     } else {
@@ -91,19 +91,19 @@ public class Candidates {
     }
 
     public int getRight() {
-        return in + 1;
+        return in;
     }
 
     public int getLeft() {
-        return i0 + 1;
+        return i0;
     }
 
     public int getTop() {
-        return j0 + 1;
+        return j0 ;
     }
 
     public int getBack() {
-        return jn + 1;
+        return jn ;
     }
 
     public Cell getVerticalTarget(Cell origin, double middle) {
